@@ -1,0 +1,29 @@
+\section{Discussion}
+
+As shown in Figure \ref{fig:acc_table}, the flat model approach outperforms the hierarchical models approach both with and without fine tuning.
+We suspect that performance of the hierarchical models may be hindered by overfitting to training data.
+The much poorer performance of the hierarchical models approach with the addition of fine tuning would support this hypothesis as fine tuning greatly increases the number of trainable parameters, providing a greater opportunity for overfitting to occur.
+Although the binary classification component of the hierarchical models approach does not seem to suffer from significant overfitting, the furniture-only and electronics-only models certainly do.
+The binary classification model was trained on roughly several thousand images per class.
+The furniture-only and electronics-only models, however, were trained on just several hundred images per class, presenting a greater opportunity for overfitting.
+Further, these furniture-only and electronics-only models had approximately the same number of example images per class as the flat model but twice as many trainable parameters per class compared to the flat model.
+Thus, these components of the hierarchical models approach might be more prone to overfitting than the flat model. 
+If overfitting in fact explains the poor performance of the hierarchical models approach, training techniques specifically designed to reduce overfitting could be used to improve the performance of the hierarchical models approach.
+In particular, dropout and data augmentation like rotation, flipping, and the addition of random noise might prove helpful \cite{srivastava2014dropout, taylor2017improving}.
+(The flat model approach, which also suffers from overfitting, would certainly stand to benefit from such interventions, too).
+
+The poor performance of the hierarchical models approach might also be improved by addressing the poor performance of the furniture-only model relative to the electronics-only model hierarchical model.
+A more systematic tuning of hyperparameter settings might improve the performance of the furniture-only model.
+In particular, using a decaying learning rate or just a lower learning rate might improve model performance with fine tuning.
+Trying other models for transfer learning such as VGG \cite{he2016deep} and inception net \cite{szegedy2015going} might also improve performance on the furniture-only classification task.   
+Finally, these experiments should be repeated with other dataset reduction choices (i.e. with other high and low-level categories from the Cdiscount dataset) to ensure that furniture, electronics, and the particular low-level categories that were chosen were representative of the entire Cdiscount dataset.
+Given the relatively poor performance of the furniture-only model, the performance of the hierarchical models approach might be better for other subsets of the Cdiscount dataset.  
+
+The scale that we tested our two approaches at --- 40 low-level classes --- is not a particularly large multi-class classification problem \cite{deng2010does}.
+The superior performance of the flat model approach compared to the hierarchical models approach we observed for this 40 class classification problem may not hold up on a larger multi-class classification problem, i.e. the entire Cdiscount 5000 class classification problem.
+It would be interesting to compare the performance of these approaches on a larger multi-class classification problem.
+However, even if the hierarchical models approach exhibits performance superior to the flat model at a larger scale, our results show that on smaller scale problems the flat model approach works best.
+Thus, for hierarchical classification problems of intermediate scale, it would likely be necessary to try both approaches and select which to use based on testing performance.
+Additionally, the hierarchical models approach, which required three separate classification models to be trained, is much more computationally expensive than the flat model approach.
+Scaling the hierarchical models approach to the entire Cdiscount dataset, which includes 49 high-level categories, would require fifty models to be trained.
+The much greater compute cost of the hierarchical models approach would need to be considered in any decision to use that approach in practice.
